@@ -35,6 +35,15 @@ function filterQuotes() {
     });
 }
 
+function showRandomQuote() {
+    if (quotes.length > 0) {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        alert(quotes[randomIndex].text);
+    } else {
+        alert("No quotes available.");
+    }
+}
+
 document.getElementById("newQuote").addEventListener("click", showRandomQuote);
 
 document.addEventListener("DOMContentLoaded", () => {
