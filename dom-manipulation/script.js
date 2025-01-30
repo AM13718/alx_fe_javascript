@@ -22,7 +22,7 @@ function syncWithServer() {
     .catch(error => console.error("Sync failed:", error));
 }
 
-function fetchFromServer() {
+function fetchQuotesFromServer() {
     fetch(serverURL)
     .then(response => response.json())
     .then(serverQuotes => {
@@ -35,7 +35,7 @@ function fetchFromServer() {
     .catch(error => console.error("Error fetching server data:", error));
 }
 
-setInterval(fetchFromServer, 30000); // Check for updates every 30 seconds
+setInterval(fetchQuotesFromServer, 30000); // Check for updates every 30 seconds
 
 function populateCategories() {
     const categoryFilter = document.getElementById("categoryFilter");
@@ -136,4 +136,5 @@ function importFromJsonFile(event) {
     };
     fileReader.readAsText(event.target.files[0]);
 }
+
 
