@@ -4,9 +4,38 @@ const quotes = JSON.parse(localStorage.getItem("quotes")) || [
     { text: "Do what you can, with what you have, where you are.", category: "Life" }
 ];
 
+const serverURL = "https://jsonplaceholder.typicode.com/posts"; // Mock API for simulation
+
 function saveQuotes() {
     localStorage.setItem("quotes", JSON.stringify(quotes));
+    syncWithServer();
 }
+
+function syncWithServer() {
+    fetch(serverURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(quotes)
+    })
+    .then(response => response.json())
+    .then(data => console.log("Data synced with server:", data))
+    .catch(error => console.error("Sync failed:", error));
+}
+
+function fetchFromServer() {
+    fetch(serverURL)
+    .then(response => response.json())
+    .then(serverQuotes => {
+        if (serverQuotes.length > quotes.length) {
+            localStorage.setItem("quotes", JSON.stringify(serverQuotes));
+            alert("New quotes have been updated from the server.");
+            location.reload();
+        }
+    })
+    .catch(error => console.error("Error fetching server data:", error));
+}
+
+setInterval(fetchFromServer, 30000); // Check for updates every 30 seconds
 
 function populateCategories() {
     const categoryFilter = document.getElementById("categoryFilter");
@@ -107,3 +136,4 @@ function importFromJsonFile(event) {
     };
     fileReader.readAsText(event.target.files[0]);
 }
+
