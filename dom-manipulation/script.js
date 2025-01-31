@@ -20,6 +20,7 @@ async function syncQuotes() {
         });
         const data = await response.json();
         console.log("Data synced with server:", data);
+        alert("Quotes synced with server!");
     } catch (error) {
         console.error("Sync failed:", error);
     }
