@@ -11,28 +11,32 @@ function saveQuotes() {
     syncWithServer();
 }
 
-function syncWithServer() {
-    fetch(serverURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(quotes)
-    })
-    .then(response => response.json())
-    .then(data => console.log("Data synced with server:", data))
-    .catch(error => console.error("Sync failed:", error));
+async function syncWithServer() {
+    try {
+        const response = await fetch(serverURL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(quotes)
+        });
+        const data = await response.json();
+        console.log("Data synced with server:", data);
+    } catch (error) {
+        console.error("Sync failed:", error);
+    }
 }
 
-function fetchQuotesFromServer() {
-    fetch(serverURL)
-    .then(response => response.json())
-    .then(serverQuotes => {
+async function fetchQuotesFromServer() {
+    try {
+        const response = await fetch(serverURL);
+        const serverQuotes = await response.json();
         if (serverQuotes.length > quotes.length) {
             localStorage.setItem("quotes", JSON.stringify(serverQuotes));
             alert("New quotes have been updated from the server.");
             location.reload();
         }
-    })
-    .catch(error => console.error("Error fetching server data:", error));
+    } catch (error) {
+        console.error("Error fetching server data:", error);
+    }
 }
 
 setInterval(fetchQuotesFromServer, 30000); // Check for updates every 30 seconds
@@ -136,5 +140,6 @@ function importFromJsonFile(event) {
     };
     fileReader.readAsText(event.target.files[0]);
 }
+
 
 
