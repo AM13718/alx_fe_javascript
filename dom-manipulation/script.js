@@ -8,10 +8,10 @@ const serverURL = "https://jsonplaceholder.typicode.com/posts"; // Mock API for 
 
 function saveQuotes() {
     localStorage.setItem("quotes", JSON.stringify(quotes));
-    syncWithServer();
+    syncQuotes();
 }
 
-async function syncWithServer() {
+async function syncQuotes() {
     try {
         const response = await fetch(serverURL, {
             method: "POST",
